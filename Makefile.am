@@ -1,0 +1,14 @@
+bin_PROGRAMS = multinv
+
+multinv_SOURCES = main.cc
+
+multinv_CXXFLAGS = $(WARN_CXXFLAGS)
+
+multinv_LDFLAGS = $(WARN_LDFLAGS)
+
+MAINTAINERCLEANFILES = \
+	$(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL)	\
+	$(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN)	\
+	m4/
+
+-include $(top_srcdir)/git.mk
