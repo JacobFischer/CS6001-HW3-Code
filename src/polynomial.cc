@@ -69,15 +69,15 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
 
     uint8_t a = m_value;
     uint8_t b = rhs.m_value;
-    uint8_t& p = m_value;
-    p = 0;
+
+    m_value = 0;
 
     for (int i = 1; i <= m_characteristic; ++i) {
         if (a == 0 || b == 0)
             break;
 
         if (b & 0b00000001)
-            p ^= a;
+            m_value ^= a;
 
         b >>= 1;
 
