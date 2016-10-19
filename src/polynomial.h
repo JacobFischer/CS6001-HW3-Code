@@ -1,5 +1,5 @@
-/* -*- Mode: C; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/*
+/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
+ *
  * Copyright (c) 2016 Michael Catanzaro
  * All rights reserved.
  *
@@ -26,9 +26,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Implement a computer program that, given an irreducible polynomial that
- * defines GC(2^n) and any f(x) in GF(2^n), returns the multiplicative inverse
- * of f(x).
- */
-int main() {
+#pragma once
+
+#include <cstdint>
+
+namespace multinv {
+
+// Represents a polynomial in a finite field GF(2^n), with n<=8.
+//
+// This class basically only exists to provide classy operator overloading.
+// It's probably useless overkill, but I like it.
+// Reference: http://stackoverflow.com/questions/4421706/operator-overloading/4421719
+class Polynomial {
+  public:
+    explicit Polynomial(uint8_t representation);
+
+    uint8_t representation() const { return m_representation; }
+
+    Polynomial& operator+=(const Polynomial&);
+    Polynomial& operator-=(const Polynomial&);
+    Polynomial& operator*=(const Polynomial&);
+
+  private:
+    uint8_t m_representation;
+};
+
+Polynomial operator+(Polynomial, const Polynomial&);
+Polynomial operator-(Polynomial, const Polynomial&);
+Polynomial operator*(Polynomial, const Polynomial&);
+
+bool operator==(const Polynomial&, const Polynomial&);
+bool operator!=(const Polynomial&, const Polynomial&);
+bool operator<(const Polynomial&, const Polynomial&);
+bool operator>(const Polynomial&, const Polynomial&);
+bool operator<=(const Polynomial&, const Polynomial&);
+bool operator>=(const Polynomial&, const Polynomial&);
+
 }

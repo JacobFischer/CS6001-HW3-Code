@@ -20,6 +20,9 @@ AM_MAINTAINER_MODE([enable])
 
 LT_LIB_M
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	src/Makefile
+])
 
 AC_OUTPUT
