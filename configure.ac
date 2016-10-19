@@ -18,11 +18,13 @@ AM_INIT_AUTOMAKE([1.14 foreign])
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
-LT_LIB_M
+LT_PREREQ([2.4])
+LT_INIT([disable-static])
 
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
+	test/Makefile
 ])
 
 AC_OUTPUT
