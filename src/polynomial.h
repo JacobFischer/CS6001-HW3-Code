@@ -40,9 +40,9 @@ class Polynomial {
   public:
     // A Polynomial object without an irreducible polynomial and characteristic
     // can be added, but cannot be multiplied.
-    Polynomial(uint8_t value,
-               uint16_t irreducible_polynomial = 0,
-               int characteristic = 0);
+    explicit Polynomial(uint8_t value,
+                        uint16_t irreducible_polynomial = 0,
+                        int characteristic = 0);
 
     // The bit representation of this polynomial.
     uint8_t value() const { return m_value; }
