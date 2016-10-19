@@ -120,6 +120,75 @@ static void multiply4() {
     assert(p1 * p2 == p3);
 }
 
+static void table_check(const Polynomial& p1,
+                        const Polynomial& p2,
+                        const Polynomial& p3)
+{
+    // This function is only needed because assert() is defined as a macro.
+    assert(p1 * p2 == p3);
+}
+
+static void multiplication_table() {
+    uint8_t ip = 0b1011;
+
+    // Full multiplication table for GF(2^3) from Stinson Example 6.6
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b001, ip, 3});
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b011, ip, 3});
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b100, ip, 3});
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b101, ip, 3});
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b110, ip, 3});
+    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b111, ip, 3});
+
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b100, ip, 3});
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b110, ip, 3});
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b011, ip, 3});
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b001, ip, 3});
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b111, ip, 3});
+    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b101, ip, 3});
+
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b011, ip, 3});
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b110, ip, 3});
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b101, ip, 3});
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b111, ip, 3});
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b100, ip, 3});
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b001, ip, 3});
+    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b010, ip, 3});
+
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b100, ip, 3});
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b011, ip, 3});
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b111, ip, 3});
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b110, ip, 3});
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b101, ip, 3});
+    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b001, ip, 3});
+
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b101, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b001, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b100, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b111, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b110, ip, 3});
+
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b110, ip, 3});
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b111, ip, 3});
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b001, ip, 3});
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b101, ip, 3});
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b011, ip, 3});
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b100, ip, 3});
+
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b111, ip, 3});
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b101, ip, 3});
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b001, ip, 3});
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b110, ip, 3});
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b100, ip, 3});
+    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b011, ip, 3});
+}
+
 int main() {
     addSubtract1();
     addSubtract2();
@@ -130,4 +199,5 @@ int main() {
     multiply2();
     multiply3();
     multiply4();
+    multiplication_table();
 }
