@@ -26,6 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "polynomial.h"
+#include <cstdint>
+#include <cstdio>
+
+using namespace multinv;
+
 /* Implement a computer program that, given an irreducible polynomial that
  * defines GF(2^n) and any f(x) in GF(2^n), returns the multiplicative inverse
  * of f(x).
@@ -36,4 +42,10 @@
  * Reference: https://en.wikipedia.org/wiki/Finite_field_arithmetic
  */
 int main() {
+    // Example in section 4.2 of FIPS 197.
+    uint16_t ip = 0b0000000100011011;
+    Polynomial p1(0x57, ip);
+    Polynomial p2(0x83, ip);
+    Polynomial p3 = p1 * p2;
+    std::printf("With IP=0x%x: 0x%x*0x%x=0x%x\n", ip, p1.value(), p2.value(), p3.value());
 }
