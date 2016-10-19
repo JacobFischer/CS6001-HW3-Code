@@ -43,7 +43,7 @@ using namespace multinv;
 int main() {
     // From homework 3 problem 3
     uint16_t ip = 0b0000000000001011;
-    Polynomial p(0b00000010, ip, 3);
+    Polynomial p{0b00000010, ip, 3};
     Polynomial result = multiplicative_inverse(p);
     std::printf("Multiplicative inverse of 0x%x with IP 0x%x is 0x%x\n", p.value(), ip, result.value());
 }

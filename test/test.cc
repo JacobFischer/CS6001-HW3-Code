@@ -36,45 +36,45 @@ using namespace multinv;
 
 // Test cases from https://en.wikipedia.org/wiki/Finite_field_arithmetic#Addition_and_subtraction
 static void addSubtract1() {
-    Polynomial p1(0b00001011);
-    Polynomial p2(0b00001100);
-    Polynomial p3(0b00000111);
+    Polynomial p1{0b00001011};
+    Polynomial p2{0b00001100};
+    Polynomial p3{0b00000111};
 
     assert(p1 + p2 == p3);
     assert(p1 - p2 == p3);
 }
 
 static void addSubtract2() {
-    Polynomial p1(0b00010100);
-    Polynomial p2(0b01000100);
-    Polynomial p3(0b01010000);
+    Polynomial p1{0b00010100};
+    Polynomial p2{0b01000100};
+    Polynomial p3{0b01010000};
 
     assert(p1 + p2 == p3);
     assert(p1 - p2 == p3);
 }
 
 static void addSubtract3() {
-    Polynomial p1(0b00000011);
-    Polynomial p2(0b00000101);
-    Polynomial p3(0b00000110);
+    Polynomial p1{0b00000011};
+    Polynomial p2{0b00000101};
+    Polynomial p3{0b00000110};
 
     assert(p1 + p2 == p3);
     assert(p1 - p2 == p3);
 }
 
 static void addSubtract4() {
-    Polynomial p1(0b00001010);
-    Polynomial p2(0b00000101);
-    Polynomial p3(0b00001111);
+    Polynomial p1{0b00001010};
+    Polynomial p2{0b00000101};
+    Polynomial p3{0b00001111};
 
     assert(p1 + p2 == p3);
     assert(p1 - p2 == p3);
 }
 
 static void addSubtract5() {
-    Polynomial p1(0b00000110);
-    Polynomial p2(0b00000110);
-    Polynomial p3(0b00000000);
+    Polynomial p1{0b00000110};
+    Polynomial p2{0b00000110};
+    Polynomial p3{0b00000000};
 
     assert(p1 + p2 == p3);
     assert(p1 - p2 == p3);
@@ -83,9 +83,9 @@ static void addSubtract5() {
 static void multiply1() {
     // Example in section 4.2 of FIPS 197.
     uint16_t ip = 0b0000000100011011;
-    Polynomial p1(0x57, ip, 8);
-    Polynomial p2(0x83, ip, 8);
-    Polynomial p3(0xc1, ip, 8);
+    Polynomial p1{0x57, ip, 8};
+    Polynomial p2{0x83, ip, 8};
+    Polynomial p3{0xc1, ip, 8};
 
     assert(p1 * p2 == p3);
 }
@@ -93,9 +93,9 @@ static void multiply1() {
 static void multiply2() {
     // Example in section 4.2.1 of FIPS 197.
     uint16_t ip = 0b0000000100011011;
-    Polynomial p1(0x57, ip, 8);
-    Polynomial p2(0x13, ip, 8);
-    Polynomial p3(0xfe, ip, 8);
+    Polynomial p1{0x57, ip, 8};
+    Polynomial p2{0x13, ip, 8};
+    Polynomial p3{0xfe, ip, 8};
 
     assert(p1 * p2 == p3);
 }
@@ -103,9 +103,9 @@ static void multiply2() {
 static void multiply3() {
     // https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
     uint16_t ip = 0b0000000100011011;
-    Polynomial p1(0x53, ip, 8);
-    Polynomial p2(0xca, ip, 8);
-    Polynomial p3(0x01, ip, 8);
+    Polynomial p1{0x53, ip, 8};
+    Polynomial p2{0xca, ip, 8};
+    Polynomial p3{0x01, ip, 8};
 
     assert(p1 * p2 == p3);
 }
@@ -113,9 +113,9 @@ static void multiply3() {
 static void multiply4() {
     // Stinson example 6.6
     uint8_t ip = 0b1011;
-    Polynomial p1(0b101, ip, 3);
-    Polynomial p2(0b111, ip, 3);
-    Polynomial p3(0b110, ip, 3);
+    Polynomial p1{0b101, ip, 3};
+    Polynomial p2{0b111, ip, 3};
+    Polynomial p3{0b110, ip, 3};
 
     assert(p1 * p2 == p3);
 }
