@@ -59,6 +59,9 @@ Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
 
 // https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
 Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
+    // FIXME: Consider turning this into a template class with the irreducible
+    // polynomial and characteristic as template parameters, to prevent attempts
+    // to multiply polynomials with different fields at compile time.
     assert(m_irreducible_polynomial == rhs.m_irreducible_polynomial);
     assert(m_irreducible_polynomial != 0);
     assert(m_characteristic == rhs.m_characteristic);
