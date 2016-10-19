@@ -41,10 +41,9 @@ using namespace multinv;
  * Reference: https://en.wikipedia.org/wiki/Finite_field_arithmetic
  */
 int main() {
-    // Example in section 4.2 of FIPS 197.
-    uint16_t ip = 0b0000000100011011;
-    Polynomial p1(0x57, ip);
-    Polynomial p2(0x83, ip);
-    Polynomial p3 = p1 * p2;
-    std::printf("With IP=0x%x: 0x%x*0x%x=0x%x\n", ip, p1.value(), p2.value(), p3.value());
+    // From homework 3 problem 3
+    uint16_t ip = 0b0000000000001011;
+    Polynomial p(0b00000010, ip, 3);
+    Polynomial result = multiplicative_inverse(p);
+    std::printf("Multiplicative inverse of 0x%x with IP 0x%x is 0x%x\n", p.value(), ip, result.value());
 }

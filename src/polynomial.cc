@@ -28,6 +28,9 @@
 #include "polynomial.h"
 
 #include <cassert>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
 
 namespace multinv {
 
@@ -58,24 +61,30 @@ Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
 Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
     assert(m_irreducible_polynomial == rhs.m_irreducible_polynomial);
     assert(m_irreducible_polynomial != 0);
+    assert(m_characteristic == rhs.m_characteristic);
+    assert(m_characteristic != 0);
 
     uint8_t a = m_value;
     uint8_t b = rhs.m_value;
     uint8_t& p = m_value;
     p = 0;
 
-    while (a != 0 && b != 0) {
+    for (int i = 1; i <= m_characteristic; ++i) {
+        if (a == 0 || b == 0)
+            break;
+
         if (b & 0b00000001)
             p ^= a;
 
         b >>= 1;
-        bool carry = (a & 0b10000000);
+
+        uint8_t leftmost_bit_mask = 1 << (m_characteristic - 1);
+        bool carry = (a & leftmost_bit_mask);
         a <<= 1;
 
         if (carry)
-            a ^= (m_irreducible_polynomial & 0b0000000011111111);
+            a ^= (m_irreducible_polynomial & ~(leftmost_bit_mask << 1));
     }
-
     return *this;
 }
 
@@ -116,6 +125,24 @@ bool operator<=(const Polynomial& lhs, const Polynomial& rhs) {
 
 bool operator>=(const Polynomial& lhs, const Polynomial& rhs) {
     return !(lhs < rhs);
+}
+
+Polynomial multiplicative_inverse(const Polynomial& p) {
+    // We're supposed to extend the extended Euclidean algorithm to cover
+    // polynomials and use that here. That would be smart, but I'm not smart.
+    // I think there's an easier way... test every polynomial in the field!
+    // (Efficiency is obviously not a goal here.)
+    for (uint8_t i = 1; i < std::pow(2, p.characteristic()); ++i) {
+        Polynomial candidate(i, p.irreducible_polynomial(), p.characteristic());
+        Polynomial result = p * candidate;
+        std::printf("0x%x * 0x%x = 0x%x\n", p.value(), candidate.value(), result.value());
+        if (result.value() == 1)
+            return candidate;
+    }
+
+    // No multiplicative inverse exists in the field. This is where proper
+    // programs would do error handling or something. We'll just crash! Sad!
+    std::abort();
 }
 
 }

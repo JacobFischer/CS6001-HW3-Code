@@ -38,11 +38,8 @@ namespace multinv {
 // Reference: http://stackoverflow.com/questions/4421706/operator-overloading/4421719
 class Polynomial {
   public:
-    // A Polynomial object without an irreducible polynomial cannot be
-    // multiplied, since the irreducible polynomial is needed to perform the
-    // required mod operations. A Polynomial object without a characteristic
-    // cannot be used to find a multiplicative inverse, since the characteristic
-    // determines the field.
+    // A Polynomial object without an irreducible polynomial and characteristic
+    // can be added, but cannot be multiplied.
     Polynomial(uint8_t value,
                uint16_t irreducible_polynomial = 0,
                int characteristic = 0);
@@ -63,6 +60,9 @@ class Polynomial {
     uint16_t m_irreducible_polynomial;
     int m_characteristic;
 };
+
+// The one! The only! Our reason for being! MULTINV!
+Polynomial multiplicative_inverse(const Polynomial&);
 
 Polynomial operator+(Polynomial, const Polynomial&);
 Polynomial operator-(Polynomial, const Polynomial&);
