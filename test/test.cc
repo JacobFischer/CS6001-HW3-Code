@@ -35,7 +35,7 @@
 using namespace multinv;
 
 // Test cases from https://en.wikipedia.org/wiki/Finite_field_arithmetic#Addition_and_subtraction
-static void addSubtract1() {
+static void add_subtract1() {
     Polynomial p1{0b00001011};
     Polynomial p2{0b00001100};
     Polynomial p3{0b00000111};
@@ -44,7 +44,7 @@ static void addSubtract1() {
     assert(p1 - p2 == p3);
 }
 
-static void addSubtract2() {
+static void add_subtract2() {
     Polynomial p1{0b00010100};
     Polynomial p2{0b01000100};
     Polynomial p3{0b01010000};
@@ -53,7 +53,7 @@ static void addSubtract2() {
     assert(p1 - p2 == p3);
 }
 
-static void addSubtract3() {
+static void add_subtract3() {
     Polynomial p1{0b00000011};
     Polynomial p2{0b00000101};
     Polynomial p3{0b00000110};
@@ -62,7 +62,7 @@ static void addSubtract3() {
     assert(p1 - p2 == p3);
 }
 
-static void addSubtract4() {
+static void add_subtract4() {
     Polynomial p1{0b00001010};
     Polynomial p2{0b00000101};
     Polynomial p3{0b00001111};
@@ -71,7 +71,7 @@ static void addSubtract4() {
     assert(p1 - p2 == p3);
 }
 
-static void addSubtract5() {
+static void add_subtract5() {
     Polynomial p1{0b00000110};
     Polynomial p2{0b00000110};
     Polynomial p3{0b00000000};
@@ -190,11 +190,11 @@ static void multiplication_table() {
 }
 
 int main() {
-    addSubtract1();
-    addSubtract2();
-    addSubtract3();
-    addSubtract4();
-    addSubtract5();
+    add_subtract1();
+    add_subtract2();
+    add_subtract3();
+    add_subtract4();
+    add_subtract5();
     multiply1();
     multiply2();
     multiply3();
