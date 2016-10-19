@@ -39,16 +39,30 @@ namespace multinv {
 // Reference: http://stackoverflow.com/questions/4421706/operator-overloading/4421719
 class Polynomial {
   public:
-    explicit Polynomial(uint8_t representation);
+    // A Polynomial object without an irreducible polynomial cannot be
+    // multiplied, since the irreducible polynomial is needed to perform the
+    // required mod operations. A Polynomial object without a characteristic
+    // cannot be used to find a multiplicative inverse, since the characteristic
+    // determines the field.
+    Polynomial(uint8_t value,
+               uint16_t irreducible_polynomial = 0,
+               int characteristic = 0);
 
-    uint8_t representation() const { return m_representation; }
+    // The bit representation of this polynomial.
+    uint8_t value() const { return m_value; }
+    // The irreducible polynomial that defines the field this polynomial exists in.
+    uint16_t irreducible_polynomial() const { return m_irreducible_polynomial; }
+    // The n in GF(2^n).
+    int characteristic() const { return m_characteristic; }
 
     Polynomial& operator+=(const Polynomial&);
     Polynomial& operator-=(const Polynomial&);
     Polynomial& operator*=(const Polynomial&);
 
   private:
-    uint8_t m_representation;
+    uint8_t m_value;
+    uint16_t m_irreducible_polynomial;
+    int m_characteristic;
 };
 
 Polynomial operator+(Polynomial, const Polynomial&);

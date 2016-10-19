@@ -28,14 +28,23 @@
 
 #include "polynomial.h"
 
+#include <cassert>
+
 namespace multinv {
 
-Polynomial::Polynomial(uint8_t representation)
-    : m_representation(representation) {
+Polynomial::Polynomial(uint8_t value,
+                       uint16_t irreducible_polynomial,
+                       int characteristic)
+    : m_value(value)
+    , m_irreducible_polynomial(irreducible_polynomial)
+    , m_characteristic(characteristic)
+{
+    assert(characteristic >= 0);
+    assert(characteristic <= 8);
 }
 
 Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
-    m_representation ^= rhs.m_representation;
+    m_value ^= rhs.m_value;
     return *this;
 }
 
@@ -46,8 +55,28 @@ Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
     return *this;
 }
 
+// https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
 Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
-    // FIXME: Implement!
+    assert(m_irreducible_polynomial == rhs.m_irreducible_polynomial);
+    assert(m_irreducible_polynomial != 0);
+
+    uint8_t a = m_value;
+    uint8_t b = rhs.m_value;
+    uint8_t& p = m_value;
+    p = 0;
+
+    while (a != 0 && b != 0) {
+        if (b & 0b00000001)
+            p ^= a;
+
+        b >>= 1;
+        bool carry = (a & 0b10000000);
+        a <<= 1;
+
+        if (carry)
+            a ^= m_irreducible_polynomial;
+    }
+
     return *this;
 }
 
@@ -67,7 +96,7 @@ Polynomial operator*(Polynomial lhs, const Polynomial& rhs) {
 }
 
 bool operator==(const Polynomial& lhs, const Polynomial& rhs) {
-    return lhs.representation() == rhs.representation();
+    return lhs.value() == rhs.value();
 }
 
 bool operator!=(const Polynomial& lhs, const Polynomial& rhs) {
@@ -75,7 +104,7 @@ bool operator!=(const Polynomial& lhs, const Polynomial& rhs) {
 }
 
 bool operator<(const Polynomial& lhs, const Polynomial& rhs) {
-    return lhs.representation() < rhs.representation();
+    return lhs.value() < rhs.value();
 }
 
 bool operator>(const Polynomial& lhs, const Polynomial& rhs) {

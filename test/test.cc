@@ -81,10 +81,40 @@ static void addSubtract5() {
     assert(p1 - p2 == p3);
 }
 
+static void multiply1() {
+    // Example in section 4.2 of FIPS 197.
+    uint16_t ip = 0b0000000100011011;
+    Polynomial p1(0x57, ip);
+    Polynomial p2(0x83, ip);
+
+    assert(p1 * p2 == 0xc1);
+}
+
+static void multiply2() {
+    // Example in section 4.2.1 of FIPS 197.
+    uint16_t ip = 0b0000000100011011;
+    Polynomial p1(0x57, ip);
+    Polynomial p2(0x13, ip);
+
+    assert(p1 * p2 == 0xfe);
+}
+
+static void multiply3() {
+    // https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
+    uint16_t ip = 0b0000000100011011;
+    Polynomial p1(0x53, ip);
+    Polynomial p2(0xca, ip);
+
+    assert(p1 * p2 == 0x01);
+}
+
 int main() {
     addSubtract1();
     addSubtract2();
     addSubtract3();
     addSubtract4();
     addSubtract5();
+    multiply1();
+    multiply2();
+    multiply3();
 }
