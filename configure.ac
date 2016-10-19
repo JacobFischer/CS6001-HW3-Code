@@ -1,4 +1,6 @@
 AC_INIT([multinv],[0.1])
+AX_REQUIRE_DEFINED([AX_IS_RELEASE])
+AX_IS_RELEASE([git-directory])
 
 AC_PREREQ([2.69])
 
