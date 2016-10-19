@@ -88,6 +88,7 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
         if (carry)
             a ^= (m_irreducible_polynomial & ~(leftmost_bit_mask << 1));
     }
+
     return *this;
 }
 
