@@ -35,7 +35,7 @@ Polynomial::Polynomial(uint8_t representation)
 }
 
 Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
-    this->m_representation ^= rhs.m_representation;
+    m_representation ^= rhs.m_representation;
     return *this;
 }
 
