@@ -73,7 +73,7 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
         a <<= 1;
 
         if (carry)
-            a ^= m_irreducible_polynomial;
+            a ^= (m_irreducible_polynomial & 0b0000000011111111);
     }
 
     return *this;
