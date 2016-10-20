@@ -62,6 +62,8 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
     // FIXME: Consider turning this into a template class with the irreducible
     // polynomial and characteristic as template parameters, to prevent attempts
     // to multiply polynomials with different fields at compile time.
+    // FIXME: Add assertion to verify the degree of the polynomial is less than
+    // or equal to the characteristic.
     assert(m_irreducible_polynomial == rhs.m_irreducible_polynomial);
     assert(m_irreducible_polynomial != 0);
     assert(m_characteristic == rhs.m_characteristic);
