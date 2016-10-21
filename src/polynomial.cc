@@ -41,8 +41,18 @@ Polynomial::Polynomial(uint8_t value,
     , m_irreducible_polynomial(irreducible_polynomial)
     , m_characteristic(characteristic)
 {
-    assert(characteristic >= 0);
+#ifndef NDEBUG
+    // Verify that the characteristic of the polynomial is compatible
+    // with an eight-bit value.
+    assert(characteristic > 0);
     assert(characteristic <= 8);
+
+    // Verify that the degree of the polynomial is less than or equal
+    // to the characteristic.
+    uint8_t characteristic_mask = 0b11111111;
+    characteristic_mask >>= (8 - characteristic);
+    assert((value & ~characteristic_mask) == 0);
+#endif
 }
 
 Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
@@ -62,8 +72,6 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
     // FIXME: Consider turning this into a template class with the irreducible
     // polynomial and characteristic as template parameters, to prevent attempts
     // to multiply polynomials with different fields at compile time.
-    // FIXME: Add assertion to verify the degree of the polynomial is less than
-    // or equal to the characteristic.
     assert(m_irreducible_polynomial == rhs.m_irreducible_polynomial);
     assert(m_irreducible_polynomial != 0);
     assert(m_characteristic == rhs.m_characteristic);
