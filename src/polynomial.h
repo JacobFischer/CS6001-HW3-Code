@@ -38,11 +38,9 @@ namespace multinv {
 // Reference: http://stackoverflow.com/questions/4421706/operator-overloading/4421719
 class Polynomial {
   public:
-    // A Polynomial object without an irreducible polynomial and characteristic
-    // can be added, but cannot be multiplied.
     explicit Polynomial(uint8_t value,
-                        uint16_t irreducible_polynomial = 0,
-                        int characteristic = 0);
+                        uint16_t irreducible_polynomial = aes_irreducible_polynomial,
+                        int characteristic = 8);
 
     // The bit representation of this polynomial.
     uint8_t value() const { return m_value; }
@@ -54,6 +52,8 @@ class Polynomial {
     Polynomial& operator+=(const Polynomial&);
     Polynomial& operator-=(const Polynomial&);
     Polynomial& operator*=(const Polynomial&);
+
+    static const uint16_t aes_irreducible_polynomial = 0b0000000100011011;
 
   private:
     uint8_t m_value;

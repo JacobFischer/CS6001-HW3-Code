@@ -82,30 +82,27 @@ static void add_subtract5() {
 
 static void multiply1() {
     // Example in section 4.2 of FIPS 197.
-    uint16_t ip = 0b0000000100011011;
-    Polynomial p1{0x57, ip, 8};
-    Polynomial p2{0x83, ip, 8};
-    Polynomial p3{0xc1, ip, 8};
+    Polynomial p1{0x57};
+    Polynomial p2{0x83};
+    Polynomial p3{0xc1};
 
     assert(p1 * p2 == p3);
 }
 
 static void multiply2() {
     // Example in section 4.2.1 of FIPS 197.
-    uint16_t ip = 0b0000000100011011;
-    Polynomial p1{0x57, ip, 8};
-    Polynomial p2{0x13, ip, 8};
-    Polynomial p3{0xfe, ip, 8};
+    Polynomial p1{0x57};
+    Polynomial p2{0x13};
+    Polynomial p3{0xfe};
 
     assert(p1 * p2 == p3);
 }
 
 static void multiply3() {
     // https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
-    uint16_t ip = 0b0000000100011011;
-    Polynomial p1{0x53, ip, 8};
-    Polynomial p2{0xca, ip, 8};
-    Polynomial p3{0x01, ip, 8};
+    Polynomial p1{0x53};
+    Polynomial p2{0xca};
+    Polynomial p3{0x01};
 
     assert(p1 * p2 == p3);
 }
