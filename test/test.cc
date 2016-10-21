@@ -166,7 +166,7 @@ static void multiplication_table() {
     table_check(Polynomial{0b101, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b100, ip, 3});
     table_check(Polynomial{0b101, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b010, ip, 3});
     table_check(Polynomial{0b101, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b010, ip, 3});
+    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b011, ip, 3});
     table_check(Polynomial{0b101, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b110, ip, 3});
 
     table_check(Polynomial{0b110, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b110, ip, 3});
