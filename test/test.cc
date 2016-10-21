@@ -132,7 +132,6 @@ static void multiply5() {
     assert(p0 * p4 == p0);
 }
 
-
 static void table_check(const Polynomial& p1,
                         const Polynomial& p2,
                         const Polynomial& p3)
