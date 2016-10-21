@@ -29,7 +29,6 @@
 
 #include <cassert>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 
 namespace multinv {
