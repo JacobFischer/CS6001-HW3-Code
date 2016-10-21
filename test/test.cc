@@ -119,7 +119,6 @@ static void multiply4() {
 
 static void multiply5() {
     // Anything multiplied by zero had better be zero.
-    uint8_t ip = 0b1011;
     Polynomial p0{0};
     Polynomial p1{0xca};
     Polynomial p2{0x01};
