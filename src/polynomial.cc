@@ -153,7 +153,6 @@ Polynomial multiplicative_inverse(const Polynomial& p) {
     for (uint8_t i = 1; i < std::pow(2, p.characteristic()); ++i) {
         Polynomial candidate(i, p.irreducible_polynomial(), p.characteristic());
         Polynomial result = p * candidate;
-        std::printf("0x%x * 0x%x = 0x%x\n", p.value(), candidate.value(), result.value());
         if (result.value() == 1)
             return candidate;
     }
