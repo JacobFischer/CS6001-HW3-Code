@@ -82,10 +82,7 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
 
     m_value = 0;
 
-    for (int i = 1; i <= m_characteristic; ++i) {
-        if (a == 0 || b == 0)
-            break;
-
+    while (a != 0 && b != 0) {
         // Polynomial addition
         if (b & 0b00000001)
             m_value ^= a;
