@@ -117,6 +117,22 @@ static void multiply4() {
     assert(p1 * p2 == p3);
 }
 
+static void multiply5() {
+    // Anything multiplied by zero had better be zero.
+    uint8_t ip = 0b1011;
+    Polynomial p0{0};
+    Polynomial p1{0xca};
+    Polynomial p2{0x01};
+    Polynomial p3{0b00001011};
+    Polynomial p4{0b00001100};
+
+    assert(p0 * p1 == p0);
+    assert(p0 * p2 == p0);
+    assert(p0 * p3 == p0);
+    assert(p0 * p4 == p0);
+}
+
+
 static void table_check(const Polynomial& p1,
                         const Polynomial& p2,
                         const Polynomial& p3)
@@ -198,5 +214,6 @@ int main() {
     multiply2();
     multiply3();
     multiply4();
+    multiply5();
     multiplication_table();
 }
