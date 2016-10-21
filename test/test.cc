@@ -187,6 +187,8 @@ static void multiplication_table() {
 }
 
 int main() {
+    // FIXME: Use a real test runner for this. This is primitive.
+    // assert() is especially shitty, I want to see line numbers.
     add_subtract1();
     add_subtract2();
     add_subtract3();
