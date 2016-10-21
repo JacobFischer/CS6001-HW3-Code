@@ -67,7 +67,8 @@ Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
     return *this;
 }
 
-// https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
+// Based on https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
+// Generalized to work with any characteristic.
 Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
     // FIXME: Consider turning this into a template class with the irreducible
     // polynomial and characteristic as template parameters, to prevent attempts
@@ -76,6 +77,9 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
     assert(m_irreducible_polynomial != 0);
     assert(m_characteristic == rhs.m_characteristic);
     assert(m_characteristic != 0);
+
+    uint8_t leftmost_bit_mask = 1 << (m_characteristic - 1);
+    uint8_t truncate_mask = ~(leftmost_bit_mask << 1);
 
     uint8_t a = m_value;
     uint8_t b = rhs.m_value;
@@ -91,12 +95,12 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
         b >>= 1;
 
         // Multiply by x
-        uint8_t leftmost_bit_mask = 1 << (m_characteristic - 1);
         bool carry = (a & leftmost_bit_mask);
         a <<= 1;
+        a &= truncate_mask;
 
         if (carry)
-            a ^= (m_irreducible_polynomial & ~(leftmost_bit_mask << 1));
+            a ^= (m_irreducible_polynomial & truncate_mask);
     }
 
     return *this;
