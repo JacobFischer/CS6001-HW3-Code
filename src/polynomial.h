@@ -53,7 +53,7 @@ class Polynomial {
     Polynomial& operator-=(const Polynomial&);
     Polynomial& operator*=(const Polynomial&);
 
-    static const uint16_t aes_irreducible_polynomial = 0b0000000100011011;
+    static const uint16_t aes_irreducible_polynomial = 0b100011011;
 
   private:
     uint8_t m_value;
