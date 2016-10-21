@@ -78,11 +78,14 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
         if (a == 0 || b == 0)
             break;
 
+        // Polynomial addition
         if (b & 0b00000001)
             m_value ^= a;
 
+        // Divide by x
         b >>= 1;
 
+        // Multiply by x
         uint8_t leftmost_bit_mask = 1 << (m_characteristic - 1);
         bool carry = (a & leftmost_bit_mask);
         a <<= 1;
