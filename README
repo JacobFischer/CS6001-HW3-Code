@@ -7,6 +7,7 @@ sorts of side-channel attacks. Don't use it.
 Requirements for tarball builds:
 
  * A C++14 compiler for binary literals. (GCC 5 should work. Tested with GCC 6.)
+ * GLib >= 2.32
  * That's it!
 
 Additional requirements for builds from git:

@@ -24,10 +24,12 @@ AM_MAINTAINER_MODE([enable])
 LT_PREREQ([2.4])
 LT_INIT([disable-static])
 
+AX_REQUIRE_DEFINED([PKG_CHECK_MODULES])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.32])
+
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
 	test/Makefile
 ])
-
 AC_OUTPUT

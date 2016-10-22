@@ -27,84 +27,75 @@
 
 #include "polynomial.h"
 
-#ifdef NDEBUG
-#undef NDEBUG
-#endif
-#include <cassert>
+#include <glib.h>
+#include <locale.h>
 
 using namespace multinv;
 
 // Test cases from https://en.wikipedia.org/wiki/Finite_field_arithmetic#Addition_and_subtraction
 static void add_subtract1() {
-    Polynomial p1{0b00001011};
-    Polynomial p2{0b00001100};
-    Polynomial p3{0b00000111};
+    Polynomial p1{0b1011};
+    Polynomial p2{0b1100};
 
-    assert(p1 + p2 == p3);
-    assert(p1 - p2 == p3);
+    g_assert_cmpuint((p1 + p2).value(), ==, 0b0111);
+    g_assert_cmpuint((p1 - p2).value(), ==, 0b0111);
 }
 
 static void add_subtract2() {
     Polynomial p1{0b00010100};
     Polynomial p2{0b01000100};
-    Polynomial p3{0b01010000};
 
-    assert(p1 + p2 == p3);
-    assert(p1 - p2 == p3);
+    g_assert_cmpuint((p1 + p2).value(), ==, 0b01010000);
+    g_assert_cmpuint((p1 - p2).value(), ==, 0b01010000);
 }
 
 static void add_subtract3() {
-    Polynomial p1{0b00000011};
-    Polynomial p2{0b00000101};
-    Polynomial p3{0b00000110};
+    Polynomial p1{0b011};
+    Polynomial p2{0b101};
 
-    assert(p1 + p2 == p3);
-    assert(p1 - p2 == p3);
+    g_assert_cmpuint((p1 + p2).value(), ==, 0b110);
+    g_assert_cmpuint((p1 - p2).value(), ==, 0b110);
 }
 
 static void add_subtract4() {
-    Polynomial p1{0b00001010};
-    Polynomial p2{0b00000101};
-    Polynomial p3{0b00001111};
+    Polynomial p1{0b1010};
+    Polynomial p2{0b0101};
+    Polynomial p3{0b1111};
 
-    assert(p1 + p2 == p3);
-    assert(p1 - p2 == p3);
+    g_assert_cmpuint((p1 + p2).value(), ==, p3.value());
+    g_assert_cmpuint((p1 - p2).value(), ==, p3.value());
 }
 
 static void add_subtract5() {
-    Polynomial p1{0b00000110};
-    Polynomial p2{0b00000110};
-    Polynomial p3{0b00000000};
+    Polynomial p1{0b110};
+    Polynomial p2{0b110};
 
-    assert(p1 + p2 == p3);
-    assert(p1 - p2 == p3);
+    g_assert_cmpuint((p1 + p2).value(), ==, 0);
+    g_assert_cmpuint((p1 - p2).value(), ==, 0);
 }
 
 static void multiply1() {
     // Example in section 4.2 of FIPS 197.
     Polynomial p1{0x57};
     Polynomial p2{0x83};
-    Polynomial p3{0xc1};
 
-    assert(p1 * p2 == p3);
+    g_assert_cmpuint((p1 * p2).value(), ==, 0xc1);
 }
 
 static void multiply2() {
     // Example in section 4.2.1 of FIPS 197.
     Polynomial p1{0x57};
     Polynomial p2{0x13};
-    Polynomial p3{0xfe};
 
-    assert(p1 * p2 == p3);
+    g_assert_cmpuint((p1 * p2).value(), ==, 0xfe);
 }
 
 static void multiply3() {
     // https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael.27s_finite_field
     Polynomial p1{0x53};
     Polynomial p2{0xca};
-    Polynomial p3{0x01};
 
-    assert(p1 * p2 == p3);
+    g_assert_cmpuint((p1 * p2).value(), ==, 0x01);
 }
 
 static void multiply4() {
@@ -112,9 +103,8 @@ static void multiply4() {
     uint8_t ip = 0b1011;
     Polynomial p1{0b101, ip, 3};
     Polynomial p2{0b111, ip, 3};
-    Polynomial p3{0b110, ip, 3};
 
-    assert(p1 * p2 == p3);
+    g_assert_cmpuint((p1 * p2).value(), ==, 0b110);
 }
 
 static void multiply5() {
@@ -122,96 +112,92 @@ static void multiply5() {
     Polynomial p0{0};
     Polynomial p1{0xca};
     Polynomial p2{0x01};
-    Polynomial p3{0b00001011};
-    Polynomial p4{0b00001100};
+    Polynomial p3{0b1011};
+    Polynomial p4{0b1100};
 
-    assert(p0 * p1 == p0);
-    assert(p0 * p2 == p0);
-    assert(p0 * p3 == p0);
-    assert(p0 * p4 == p0);
-}
-
-static void table_check(const Polynomial& p1,
-                        const Polynomial& p2,
-                        const Polynomial& p3)
-{
-    // This function is only needed because assert() is defined as a macro.
-    assert(p1 * p2 == p3);
+    g_assert_cmpuint((p0 * p1).value(), ==, 0);
+    g_assert_cmpuint((p0 * p2).value(), ==, 0);
+    g_assert_cmpuint((p0 * p3).value(), ==, 0);
+    g_assert_cmpuint((p0 * p4).value(), ==, 0);
 }
 
 static void multiplication_table() {
     uint8_t ip = 0b1011;
 
     // Full multiplication table for GF(2^3) from Stinson Example 6.6
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b001, ip, 3});
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b010, ip, 3});
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b011, ip, 3});
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b100, ip, 3});
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b101, ip, 3});
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b110, ip, 3});
-    table_check(Polynomial{0b001, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b111, ip, 3});
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b001);
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b010);
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b011);
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b100);
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b101);
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b110);
+    g_assert_cmpuint((Polynomial{0b001, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b111);
 
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b010, ip, 3});
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b100, ip, 3});
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b110, ip, 3});
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b011, ip, 3});
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b001, ip, 3});
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b010, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b101, ip, 3});
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b010);
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b100);
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b110);
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b011);
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b001);
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b111);
+    g_assert_cmpuint((Polynomial{0b010, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b101);
 
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b011, ip, 3});
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b110, ip, 3});
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b101, ip, 3});
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b100, ip, 3});
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b001, ip, 3});
-    table_check(Polynomial{0b011, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b010, ip, 3});
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b011);
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b110);
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b101);
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b111);
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b100);
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b001);
+    g_assert_cmpuint((Polynomial{0b011, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b010);
 
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b100, ip, 3});
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b011, ip, 3});
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b110, ip, 3});
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b010, ip, 3});
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b101, ip, 3});
-    table_check(Polynomial{0b100, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b001, ip, 3});
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b100);
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b011);
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b111);
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b110);
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b010);
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b101);
+    g_assert_cmpuint((Polynomial{0b100, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b001);
 
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b101, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b001, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b100, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b010, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b011, ip, 3});
-    table_check(Polynomial{0b101, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b110, ip, 3});
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b101);
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b001);
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b100);
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b010);
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b111);
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b011);
+    g_assert_cmpuint((Polynomial{0b101, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b110);
 
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b110, ip, 3});
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b001, ip, 3});
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b101, ip, 3});
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b011, ip, 3});
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b010, ip, 3});
-    table_check(Polynomial{0b110, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b100, ip, 3});
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b110);
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b111);
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b001);
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b101);
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b011);
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b010);
+    g_assert_cmpuint((Polynomial{0b110, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b100);
 
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b001, ip, 3}, Polynomial{0b111, ip, 3});
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b010, ip, 3}, Polynomial{0b101, ip, 3});
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b011, ip, 3}, Polynomial{0b010, ip, 3});
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b100, ip, 3}, Polynomial{0b001, ip, 3});
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b101, ip, 3}, Polynomial{0b110, ip, 3});
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b110, ip, 3}, Polynomial{0b100, ip, 3});
-    table_check(Polynomial{0b111, ip, 3}, Polynomial{0b111, ip, 3}, Polynomial{0b011, ip, 3});
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b001, ip, 3}).value(), ==, 0b111);
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b010, ip, 3}).value(), ==, 0b101);
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b011, ip, 3}).value(), ==, 0b010);
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b100, ip, 3}).value(), ==, 0b001);
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b101, ip, 3}).value(), ==, 0b110);
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b110, ip, 3}).value(), ==, 0b100);
+    g_assert_cmpuint((Polynomial{0b111, ip, 3} * Polynomial{0b111, ip, 3}).value(), ==, 0b011);
 }
 
-int main() {
-    // FIXME: Use a real test runner for this. This is primitive.
-    // assert() is especially shitty, I want to see line numbers.
-    add_subtract1();
-    add_subtract2();
-    add_subtract3();
-    add_subtract4();
-    add_subtract5();
-    multiply1();
-    multiply2();
-    multiply3();
-    multiply4();
-    multiply5();
-    multiplication_table();
+int main(int argc, char *argv[]) {
+    setlocale(LC_ALL, "");
+
+    g_test_init(&argc, &argv, nullptr);
+
+    g_test_add_func("/Polynomial/add-subtract1", add_subtract1);
+    g_test_add_func("/Polynomial/add-subtract2", add_subtract2);
+    g_test_add_func("/Polynomial/add-subtract3", add_subtract3);
+    g_test_add_func("/Polynomial/add-subtract4", add_subtract4);
+    g_test_add_func("/Polynomial/add-subtract5", add_subtract5);
+    g_test_add_func("/Polynomial/multiply1", multiply1);
+    g_test_add_func("/Polynomial/multiply2", multiply2);
+    g_test_add_func("/Polynomial/multiply3", multiply3);
+    g_test_add_func("/Polynomial/multiply4", multiply4);
+    g_test_add_func("/Polynomial/multiply5", multiply5);
+    g_test_add_func("/Polynomial/multiplication-table", multiplication_table);
+
+    return g_test_run();
 }
