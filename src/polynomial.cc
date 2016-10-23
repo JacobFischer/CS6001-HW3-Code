@@ -1,6 +1,8 @@
 /* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright (c) 2016 Michael Catanzaro <michael.catanzaro@mst.edu>
+ * Copyright (c) 2016 Jacob Fischer <jtf3m8@mst.edu>
+ * Copyright (c) 2016 Christian Storer <cs9yb@mst.edu>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
